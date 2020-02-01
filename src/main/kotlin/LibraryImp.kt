@@ -2,14 +2,17 @@ import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCollection
 import org.bson.Document
+import tools.BasicCRUD
+import tools.Curator
 import tools.DataBase
 import java.io.FileInputStream
 import java.util.*
 
-class CuratorImp: DataBase {
+
+class LibraryImp : DataBase, BasicCRUD, Curator {
     private val configFile = "config.properties"
 
-    override fun dataBaseConnect() {
+    override fun dataBaseConnect(dataBaseName: String, collectionName: String) {
         // prepare data from configuration file to connect
         val config = Properties()
         val path = Thread.currentThread().contextClassLoader.getResource("")?.path
@@ -19,13 +22,19 @@ class CuratorImp: DataBase {
         // connect to MongoDB and get instance to work with
         val uri = MongoClientURI(mongoClusterAddress)
         val mongoClient = MongoClient(uri)
-        // use db.${"your database"}
-        val database = mongoClient.getDatabase("library")
-        val collection: MongoCollection<Document> = database.getCollection("books")
-        // add value to collection
-        val person: Document = Document("title", "Diary of Bob from OFFLINE")
-            .append("price", "21")
-        // upload value to collection insertOne/ insertMany -> as a array[]
-         collection.insertOne(person)
+        val database = mongoClient.getDatabase(dataBaseName)
+        val collection: MongoCollection<Document> = database.getCollection(collectionName)
+
+        // 1. get collection from Mongo
+        // 2. convert to Java collection (HashMap?)
+        // 3. update database
+        val words: Document = Document("WORD", "Bumperzz")
+            .append("WORD_COUNT", 1)
+
+        // update
+        update(collection, words)
+
+        // close connection to DB
+        mongoClient.close()
     }
 }
