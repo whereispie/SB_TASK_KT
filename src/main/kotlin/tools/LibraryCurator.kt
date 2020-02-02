@@ -9,12 +9,12 @@ import java.io.File
  */
 
 interface LibraryCurator {
-    fun wordFilter(originalFile: String): Set<String> {
+    fun wordFilter(originalFile: String): List<String> {
         // new_word not in WORDS
         // then WORD = new_word, WORD_COUNT = 1
         // new_word in OLD_WORDS
         // then WORD_COUNT = 1
-        return emptySet()
+        return emptyList()
     }
 
     fun wordTableCheck(filteredFile: File) {}

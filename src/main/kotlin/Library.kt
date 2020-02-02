@@ -4,8 +4,8 @@ open class Library {
         @JvmStatic
         fun main(args: Array<String>) {
             val start = LibraryImp()
-            val sets = start.wordFilter("src/main/resources/test.txt")
-            sets.forEach { println(it) }
+            val filteredWords = start.wordFilter("src/main/resources/test.txt")
+            filteredWords.forEach { println(it) }
             start.dataBaseConnect("library","words")
         }
     }

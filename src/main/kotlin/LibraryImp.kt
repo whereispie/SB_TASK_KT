@@ -42,6 +42,7 @@ class LibraryImp : MongoConnect, BasicCRUD, LibraryCurator {
         /** 3. update database */
         val words: Document = Document("WORD", "Wolf")
             .append("WORD_COUNT", 1)
+
         update(collection, words)
 
         /** close connection to DB */
@@ -49,11 +50,11 @@ class LibraryImp : MongoConnect, BasicCRUD, LibraryCurator {
     }
 
 
-    override fun wordFilter(originalFile: String): Set<String> {
+    override fun wordFilter(originalFile: String): List<String> {
         return Files.readAllLines(Paths.get("src/main/resources/test.txt"))
             .stream()
             .map { words: String -> words.split(" ".toRegex()).toTypedArray() }
             .flatMap { array: Array<String>? -> Arrays.stream(array) }
-            .collect(Collectors.toSet())
+            .collect(Collectors.toList())
     }
 }
