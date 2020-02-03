@@ -12,7 +12,7 @@ interface BasicCRUD {
     /**
      * UPDATE collection with current values from document
      */
-    fun update(mongoCollection: MongoCollection<Document>,words: Document) {
+    fun insertOne(mongoCollection: MongoCollection<Document>, words: Document) {
         mongoCollection.insertOne(words)
     }
 }

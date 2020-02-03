@@ -7,7 +7,6 @@ import tools.BasicCRUD
 import tools.LibraryCurator
 import tools.MongoConnect
 import java.io.FileInputStream
-import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
@@ -40,10 +39,10 @@ class LibraryImp : MongoConnect, BasicCRUD, LibraryCurator {
 
 
         /** 3. update database */
-        val words: Document = Document("WORD", "Wolf")
+        val word: Document = Document("WORD", "Wolf")
             .append("WORD_COUNT", 1)
 
-        update(collection, words)
+        insertOne(collection, word)
 
         /** close connection to DB */
         mongoSession.close()
@@ -56,5 +55,13 @@ class LibraryImp : MongoConnect, BasicCRUD, LibraryCurator {
             .map { words: String -> words.split(" ".toRegex()).toTypedArray() }
             .flatMap { array: Array<String>? -> Arrays.stream(array) }
             .collect(Collectors.toList())
+            .filter {
+                it.matches("\\p{IsLatin}+".toRegex())
+                        || it.matches("^\\p{IsCyrillic}+$".toRegex())
+                        || it.matches("[+-]?([0-9]*[.])?[0-9]+".toRegex()) // []
+                        || it.matches("[^\\d+\$]".toRegex())
+            }
+        // .filter { it.contains("привет") || it.contains("hi") } // take WORD from list
+
     }
 }
