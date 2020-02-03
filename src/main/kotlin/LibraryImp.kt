@@ -6,14 +6,18 @@ import org.bson.Document
 import tools.BasicCRUD
 import tools.LibraryCurator
 import tools.MongoConnect
+import tools.BasicOperationSystemTools
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import java.util.stream.Collectors
+import javax.swing.JFileChooser
+import javax.swing.filechooser.FileSystemView
+import kotlin.system.exitProcess
 
 
-class LibraryImp : MongoConnect, BasicCRUD, LibraryCurator {
+class LibraryImp : MongoConnect, BasicCRUD, LibraryCurator, BasicOperationSystemTools {
     private val configFile = "config.properties"
 
     override fun dataBaseConnect(dataBaseName: String, collectionName: String) {
@@ -49,8 +53,8 @@ class LibraryImp : MongoConnect, BasicCRUD, LibraryCurator {
     }
 
 
-    override fun wordFilter(originalFile: String): List<String> {
-        return Files.readAllLines(Paths.get("src/main/resources/test.txt"))
+    override fun wordFilter(filePath: String): List<String> {
+        return Files.readAllLines(Paths.get(filePath))
             .stream()
             .map { words: String -> words.split(" ".toRegex()).toTypedArray() }
             .flatMap { array: Array<String>? -> Arrays.stream(array) }
@@ -61,7 +65,36 @@ class LibraryImp : MongoConnect, BasicCRUD, LibraryCurator {
                         || it.matches("[+-]?([0-9]*[.])?[0-9]+".toRegex()) // []
                         || it.matches("[^\\d+\$]".toRegex())
             }
-        // .filter { it.contains("привет") || it.contains("hi") } // take WORD from list
+    }
 
+    override fun chooseTextFile(): String {
+        /** Choose file from GUI */
+        val jfc = JFileChooser(FileSystemView.getFileSystemView().homeDirectory)
+        val returnValue = jfc.showOpenDialog(null)
+        var localOSFilePath = ""
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            val selectedFile = jfc.selectedFile
+            localOSFilePath = selectedFile.absolutePath.toString()
+            /** ELSE -> Console read() + check on common text types*/
+        } else {
+            println("[Please add filepath as absolute path, for example: /Users/see/resources/test.txt]")
+            println("[Print EXIT to close application]")
+            val readText = readLine()
+            if (readText != null) {
+                if (readText == "EXIT") exitProcess(0)
+                if (readText.substringAfter(".").contains("txt") ||
+                    readText.substringAfter(".").contains("doc") ||
+                    readText.substringAfter(".").contains("odt") ||
+                    readText.substringAfter(".").contains("pdf") ||
+                    readText.substringAfter(".").contains("rtf") ||
+                    readText.substringAfter(".").contains("tex")
+                ) {
+                    localOSFilePath = readText
+                } else {
+                    chooseTextFile()
+                }
+            }
+        }
+        return localOSFilePath
     }
 }

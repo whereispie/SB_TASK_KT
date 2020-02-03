@@ -1,12 +1,15 @@
-open class Library {
+import tools.BasicOperationSystemTools
+
+open class Library:BasicOperationSystemTools {
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
             val start = LibraryImp()
-            val filteredWords = start.wordFilter("src/main/resources/test.txt")
+            val filePath = start.chooseTextFile()
+            val filteredWords = start.wordFilter(filePath)
             filteredWords.forEach { println(it) }
-            start.dataBaseConnect("library","words")
+//            start.dataBaseConnect("library","words")
         }
     }
 }
