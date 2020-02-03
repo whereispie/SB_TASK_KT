@@ -8,8 +8,8 @@ import java.io.File
  * 2. Check data in DB for duplicate/or insert new WORD & WORD_COUNT ++
  */
 
-interface LibraryCurator {
-    fun wordFilter(originalFile: String): List<String> {
+interface LibraryFilter {
+    fun wordFilter(originalText: String): List<String> {
         // new_word not in WORDS
         // then WORD = new_word, WORD_COUNT = 1
         // new_word in OLD_WORDS
