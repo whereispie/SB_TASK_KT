@@ -1,15 +1,19 @@
-import com.mongodb.Block
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCollection
+import com.mongodb.client.MongoCursor
 import org.bson.Document
 import tools.BasicCRUD
+import tools.BasicOperationSystemTools
 import tools.MongoConnect
+import java.io.BufferedWriter
 import java.io.FileInputStream
+import java.io.FileWriter
+import java.io.PrintWriter
 import java.util.*
 
 
-class MongoConnect : MongoConnect, BasicCRUD {
+class MongoConnect : MongoConnect, BasicCRUD, BasicOperationSystemTools {
     private val configFile = "config.properties"
 
     override fun dataBaseConnect(dataBaseName: String, collectionName: String) {
@@ -28,16 +32,21 @@ class MongoConnect : MongoConnect, BasicCRUD {
         val collection: MongoCollection<Document> = database.getCollection(collectionName)
 
         /** 1. get collection from Mongo */
-        val findIterable = collection.find(Document())
-        val printBlock = Block<Document> { document -> println(document.toJson()) }
-        findIterable.forEach(printBlock)
+        val system = SystemTools()
+        system.saveToLocalFromMongo(collection)
+        // todo > make separate function in BasicOperation* interface
 
-        /** 2. checked library after stream() (List?) */
+        // todo > PARSE JSON fields (delete object id, and other rubbish)
 
-        /** 3. checked local library with MongoDB (WORD + WORD_COUNT++) */
+        /** 2. checked local library with MongoDB (WORD + WORD_COUNT++) */
 
-        /** 4. update database */
-        val word: Document = Document("WORD", "Wolf")
+        // todo > READ mongoWordArchive into collection
+        // todo > COMPARE mongoWordArchive & filteredWords into UploadList
+
+        /** 3. update database */
+
+        // todo ADD UploadList to MongoDB
+        val word: Document = Document("WORD", "FROM_COMPARE_COLLECTION")
             .append("WORD_COUNT", 1)
 
         insertOne(collection, word)
@@ -45,6 +54,5 @@ class MongoConnect : MongoConnect, BasicCRUD {
         /** close connection to DB */
         mongoSession.close()
     }
-
 
 }

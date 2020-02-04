@@ -1,5 +1,8 @@
 package tools
 
+import com.mongodb.client.MongoCollection
+import org.bson.Document
+
 /**
  * Interface helps manipulate OS GUI
  */
@@ -16,5 +19,11 @@ interface BasicOperationSystemTools {
 
     fun chooseTextFile(): String {
         return toString()
+    }
+
+    /**
+     * Save data in JSON format from Mongo to local .txt file
+     */
+    fun saveToLocalFromMongo(collection: MongoCollection<Document>){
     }
 }

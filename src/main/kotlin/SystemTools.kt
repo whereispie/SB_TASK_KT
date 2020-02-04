@@ -1,4 +1,10 @@
+import com.mongodb.client.MongoCollection
+import com.mongodb.client.MongoCursor
+import org.bson.Document
 import tools.BasicOperationSystemTools
+import java.io.BufferedWriter
+import java.io.FileWriter
+import java.io.PrintWriter
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileSystemView
 import kotlin.system.exitProcess
@@ -31,5 +37,23 @@ class SystemTools : BasicOperationSystemTools {
             }
         }
         return localOSFilePath
+    }
+
+    override fun saveToLocalFromMongo(collection: MongoCollection<Document>) {
+        var cursor: MongoCursor<Document?>? = collection.find().iterator()
+        val mongoWordArchive = "/Users/see/IdeaProjects/SB_TASK_KT/src/main/resources/uploadFromMongo.txt"
+        val out = PrintWriter(
+            BufferedWriter(
+                FileWriter(
+                    mongoWordArchive,
+                    true
+                )
+            ) // todo > CHANGE to lambda function FileWriter("c:\\test\\staff.json").use { writer -> gson.toJson(projectBeans, writer) }
+        )
+        while (cursor!!.hasNext()) {
+            out.println(cursor.next()?.toJson())
+        }
+        out.flush() // flush to ensure writes
+        out.close()
     }
 }
