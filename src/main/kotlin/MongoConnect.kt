@@ -37,26 +37,19 @@ class MongoConnect : MongoConnect, BasicCRUD, BasicOperationSystemTools {
 
         /** 1. get collection from Mongo */
         operationSystemTools.saveFromMongo(collection)
-        // todo > make separate function in BasicOperation* interface
-
-        // todo > PARSE JSON fields (delete object id, and other rubbish)
 
         /** 2. checked local library with MongoDB (WORD + WORD_COUNT++) */
-
         // todo > READ mongoWordArchive into collection
         // todo > COMPARE mongoWordArchive & filteredWords into UploadList
 
-        /** 3. updateOne/Many database */
-
-        // todo ADD UploadList to MongoDB
-//        collection.updateOne(eq("WORD", "EARTH"), Document("\$set", Document("WORD", "EARTH-2")))
-//        collection.updateOne(eq("WORD_COUNT", 1), Document("\$set", Document("WORD_COUNT", 2)))
-
+        /** 3. updateMany database */
         collection.updateMany(
-            eq("WORD", "JUPITER"),
-            combine(
-                set("WORD_COUNT", 555)
-            ));
+            Filters.eq("WORD", "EARTH-2"),
+            Updates.combine(
+                Updates.set("WORD", "EARTH-13"),
+                Updates.set("WORD_COUNT", 0)
+            )
+        );
 
         /** close connection to DB */
         mongoSession.close()
