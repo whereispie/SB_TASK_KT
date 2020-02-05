@@ -1,7 +1,3 @@
-{"_id": {"$oid": "5e353ffa29fca55b4c8afe50"}, "WORD": "Car", "WORD_COUNT": 1}
-{"_id": {"$oid": "5e3551a40357d84ebb4b8327"}, "WORD": "Bump", "WORD_COUNT": 1}
-{"_id": {"$oid": "5e357a57a278e1146ccaff23"}, "WORD": "Wolf", "WORD_COUNT": 1}
-{"_id": {"$oid": "5e36e3aa57014f419a706f7d"}, "WORD": "Wolf", "WORD_COUNT": 1}
-{"_id": {"$oid": "5e3878ee7c031e7cc3527808"}, "WORD": "Wolf", "WORD_COUNT": 1}
-{"_id": {"$oid": "5e39559d55948f038b6a9a8c"}, "WORD": "Wolf", "WORD_COUNT": 1}
-{"_id": {"$oid": "5e395a8b66edd91a993752cd"}, "WORD": "FROM_COMPARE_COLLECTION", "WORD_COUNT": 1}
+{"_id": {"$oid": "5e3b22cb35390526c7a5c846"}, "WORD": "MOON", "WORD_COUNT": 2}
+{"_id": {"$oid": "5e3b230f53b62c30e8e7e855"}, "WORD": "EARTH-2", "WORD_COUNT": 1}
+{"_id": {"$oid": "5e3b234d0f74b003b09d4dfc"}, "WORD": "JUPITER", "WORD_COUNT": 1}

@@ -13,47 +13,50 @@ class SystemTools : BasicOperationSystemTools {
     override fun chooseTextFile(): String {
         val jfc = JFileChooser(FileSystemView.getFileSystemView().homeDirectory)
         val returnValue = jfc.showOpenDialog(null)
-        var localOSFilePath = ""
+        var localFilePath = ""
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             val selectedFile = jfc.selectedFile
-            localOSFilePath = selectedFile.absolutePath.toString()
+            localFilePath = selectedFile.absolutePath.toString()
         } else {
             println("[Please add filepath as absolute path, for example: /Users/see/resources/test.txt]")
             println("[Print EXIT to close application]")
-            val readText = readLine()
-            if (readText != null) {
-                if (readText == "EXIT") exitProcess(0)
-                if (readText.substringAfter(".").contains("txt") ||
-                    readText.substringAfter(".").contains("doc") ||
-                    readText.substringAfter(".").contains("odt") ||
-                    readText.substringAfter(".").contains("pdf") ||
-                    readText.substringAfter(".").contains("rtf") ||
-                    readText.substringAfter(".").contains("tex")
+            val consoleInput = readLine()
+            if (consoleInput != null) {
+                if (consoleInput == "EXIT") exitProcess(0)
+                if (consoleInput.substringAfter(".").contains("txt") ||
+                    consoleInput.substringAfter(".").contains("doc") ||
+                    consoleInput.substringAfter(".").contains("odt") ||
+                    consoleInput.substringAfter(".").contains("pdf") ||
+                    consoleInput.substringAfter(".").contains("rtf") ||
+                    consoleInput.substringAfter(".").contains("tex")
                 ) {
-                    localOSFilePath = readText
+                    localFilePath = consoleInput
                 } else {
                     chooseTextFile()
                 }
             }
         }
-        return localOSFilePath
+        return localFilePath
     }
 
-    override fun saveToLocalFromMongo(collection: MongoCollection<Document>) {
-        var cursor: MongoCursor<Document?>? = collection.find().iterator()
-        val mongoWordArchive = "/Users/see/IdeaProjects/SB_TASK_KT/src/main/resources/uploadFromMongo.txt"
+    override fun saveFromMongo(collection: MongoCollection<Document>) {
+        val cursor: MongoCursor<Document?>? = collection.find().iterator()
+        val libraryArchive = "/Users/see/IdeaProjects/SB_TASK_KT/src/main/resources/uploadFromMongo.txt"
+        val fileCleaner = PrintWriter(libraryArchive)
+        fileCleaner.print("")
+        fileCleaner.close()
         val out = PrintWriter(
             BufferedWriter(
                 FileWriter(
-                    mongoWordArchive,
+                    libraryArchive,
                     true
                 )
-            ) // todo > CHANGE to lambda function FileWriter("c:\\test\\staff.json").use { writer -> gson.toJson(projectBeans, writer) }
+            ) // todo > CHANGE to lambda function FileWriter("c:\\test\\staff.json").use { writer -> gson.toJson(collection, writer) }
         )
         while (cursor!!.hasNext()) {
             out.println(cursor.next()?.toJson())
         }
-        out.flush() // flush to ensure writes
+        out.flush()
         out.close()
     }
 }

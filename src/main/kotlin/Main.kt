@@ -11,7 +11,7 @@ open class Main : BasicOperationSystemTools {
 //            val filePath = choose.chooseTextFile()
 //            val filteredWords = wordFilter.wordFilter(filePath)
 //            filteredWords.forEach { println(it) }
-            start.dataBaseConnect("library","words")
+            start.dataBaseConnect("library","words") // TODO replace on config.file variables
         }
     }
 }

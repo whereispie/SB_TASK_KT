@@ -20,4 +20,7 @@ interface BasicCRUD {
     fun insertOne(mongoCollection: MongoCollection<Document>, words: Document) {
         mongoCollection.insertOne(words)
     }
+
+    fun addWord(){
+    }
 }

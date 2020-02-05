@@ -24,6 +24,6 @@ interface BasicOperationSystemTools {
     /**
      * Save data in JSON format from Mongo to local .txt file
      */
-    fun saveToLocalFromMongo(collection: MongoCollection<Document>){
+    fun saveFromMongo(collection: MongoCollection<Document>){
     }
 }
