@@ -5,35 +5,27 @@ import tools.BasicOperationSystemTools
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.io.PrintWriter
-import javax.swing.JFileChooser
-import javax.swing.filechooser.FileSystemView
 import kotlin.system.exitProcess
 
 class SystemTools : BasicOperationSystemTools {
     override fun chooseTextFile(): String {
-        val jfc = JFileChooser(FileSystemView.getFileSystemView().homeDirectory)
-        val returnValue = jfc.showOpenDialog(null)
         var localFilePath = ""
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            val selectedFile = jfc.selectedFile
-            localFilePath = selectedFile.absolutePath.toString()
-        } else {
-            println("[Please add filepath as absolute path, for example: /Users/see/resources/test.txt]")
-            println("[Print EXIT to close application]")
-            val consoleInput = readLine()
-            if (consoleInput != null) {
-                if (consoleInput == "EXIT") exitProcess(0)
-                if (consoleInput.substringAfter(".").contains("txt") ||
-                    consoleInput.substringAfter(".").contains("doc") ||
-                    consoleInput.substringAfter(".").contains("odt") ||
-                    consoleInput.substringAfter(".").contains("pdf") ||
-                    consoleInput.substringAfter(".").contains("rtf") ||
-                    consoleInput.substringAfter(".").contains("tex")
-                ) {
-                    localFilePath = consoleInput
-                } else {
-                    chooseTextFile()
-                }
+        println("[Please add file, UNIX for example: /Users/see/resources/test.txt]")
+        println("""[Please add file, WINDOWS for example: C:\resources\test.txt]""")
+        println("[Print EXIT to close application]")
+        val consoleInput = readLine()
+        if (consoleInput != null) {
+            if (consoleInput == "EXIT") exitProcess(0)
+            if (consoleInput.substringAfter(".").contains("txt") ||
+                consoleInput.substringAfter(".").contains("doc") ||
+                consoleInput.substringAfter(".").contains("odt") ||
+                consoleInput.substringAfter(".").contains("pdf") ||
+                consoleInput.substringAfter(".").contains("rtf") ||
+                consoleInput.substringAfter(".").contains("tex")
+            ) {
+                localFilePath = consoleInput
+            } else {
+                chooseTextFile()
             }
         }
         return localFilePath

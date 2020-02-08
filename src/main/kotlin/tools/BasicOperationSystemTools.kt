@@ -11,10 +11,6 @@ interface BasicOperationSystemTools {
 
     /**
      * Choose file with text source using JChooser
-     *
-     *      MAIN OPTION: from GUI (JChooser)
-     *      BACKUP OPTION: console readLine()
-     *      ADDITIONAL: check on common text types
      */
 
     fun chooseTextFile(): String {
@@ -24,6 +20,6 @@ interface BasicOperationSystemTools {
     /**
      * Save data in JSON format from Mongo to local .txt file
      */
-    fun saveFromMongo(collection: MongoCollection<Document>){
+    fun saveFromMongo(collection: MongoCollection<Document>) {
     }
 }

@@ -17,10 +17,10 @@ interface BasicCRUD {
      * @Document - Data in wrap of JSON Object
      */
 
-    fun insertOne(mongoCollection: MongoCollection<Document>, words: Document) {
-        mongoCollection.insertOne(words)
-    }
+    fun insertOne()
 
-    fun addWord(){
-    }
+    fun insertMany()
+
+    fun addWord()
+
 }

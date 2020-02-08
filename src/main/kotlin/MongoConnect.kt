@@ -18,7 +18,7 @@ import java.util.*
 val operationSystemTools = SystemTools()
 const val configurationFile = "config.properties"
 
-class MongoConnect : MongoConnect, BasicCRUD, BasicOperationSystemTools {
+class MongoConnect : MongoConnect, BasicOperationSystemTools {
 
     override fun dataBaseConnect(dataBaseName: String, collectionName: String) {
 
@@ -54,5 +54,4 @@ class MongoConnect : MongoConnect, BasicCRUD, BasicOperationSystemTools {
         /** close connection to DB */
         mongoSession.close()
     }
-
 }

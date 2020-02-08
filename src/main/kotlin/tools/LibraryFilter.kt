@@ -9,13 +9,13 @@ import java.io.File
  */
 
 interface LibraryFilter {
-    fun wordFilter(originalText: String): List<String> {
-        // new_word not in WORDS
-        // then WORD = new_word, WORD_COUNT = 1
-        // new_word in OLD_WORDS
-        // then WORD_COUNT = 1
+    fun fileFilter(originalText: String): List<String> {
         return emptyList()
     }
 
     fun wordTableCheck(filteredFile: File) {}
+    // new_word not in WORDS
+    // then WORD = new_word, WORD_COUNT = 1
+    // new_word in OLD_WORDS
+    // then WORD_COUNT = 1
 }
