@@ -3,6 +3,7 @@ import com.mongodb.client.MongoCursor
 import org.bson.Document
 import tools.BasicOperationSystemTools
 import java.io.BufferedWriter
+import java.io.File
 import java.io.FileWriter
 import java.io.PrintWriter
 import kotlin.system.exitProcess
@@ -10,8 +11,9 @@ import kotlin.system.exitProcess
 class SystemTools : BasicOperationSystemTools {
     override fun chooseTextFile(): String {
         var localFilePath = ""
-        println("[Please add file, UNIX for example: /Users/see/resources/test.txt]")
-        println("""[Please add file, WINDOWS for example: C:\resources\test.txt]""")
+        println("[Please ADD file]")
+        println("[UNIX: /Users/see/FOR_EXAMPLE.txt]")
+        println("""[WINDOWS: C:\resources\FOR_EXAMPLE.txt]""")
         println("[Print EXIT to close application]")
         val consoleInput = readLine()
         if (consoleInput != null) {
@@ -33,7 +35,7 @@ class SystemTools : BasicOperationSystemTools {
 
     override fun saveFromMongo(collection: MongoCollection<Document>) {
         val cursor: MongoCursor<Document?>? = collection.find().iterator()
-        val libraryArchive = "/Users/see/IdeaProjects/SB_TASK_KT/src/main/resources/uploadFromMongo.txt"
+        val libraryArchive = File("src/main/resources/uploadFromMongo.txt")
         val fileCleaner = PrintWriter(libraryArchive)
         fileCleaner.print("")
         fileCleaner.close()
