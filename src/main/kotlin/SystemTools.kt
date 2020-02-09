@@ -1,14 +1,4 @@
-import com.mongodb.client.MongoCollection
-import com.mongodb.client.MongoCursor
-import com.mongodb.client.model.Projections
-import org.bson.Document
 import tools.BasicOperationSystemTools
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
-import java.io.PrintWriter
-import java.util.ArrayList
-import java.util.function.Consumer
 import kotlin.system.exitProcess
 
 class SystemTools : BasicOperationSystemTools {
@@ -35,34 +25,4 @@ class SystemTools : BasicOperationSystemTools {
         }
         return localFilePath
     }
-
-    override fun saveFromMongo(collection: MongoCollection<Document>) {
-        val cursor: MongoCursor<Document?>? = collection.find().iterator()
-        val libraryArchive = File("src/main/resources/uploadFromMongo.txt")
-        val fileCleaner = PrintWriter(libraryArchive)
-        fileCleaner.print("")
-        fileCleaner.close()
-        val out = PrintWriter(
-            BufferedWriter(
-                FileWriter(
-                    libraryArchive,
-                    true
-                )
-            ) // todo > CHANGE to lambda function FileWriter("c:\\test\\staff.json").use { writer -> gson.toJson(collection, writer) }
-        )
-        while (cursor!!.hasNext()) {
-            out.println(cursor.next()?.toJson())
-        }
-        out.flush()
-        out.close()
-    }
-
-    /** 2.1.1) Creates a projection that excludes the _id field. */
-//    override fun saveFromMongo(collection: MongoCollection<Document>) {
-//        val cursor = collection.find().projection(Projections.excludeId())
-//        val asList: MutableList<Document> = ArrayList()
-//        cursor.forEach(Consumer { d: Document -> asList.add(d) })
-////        cursor.forEach { println(it.toJson()) }
-//        FileWriter("src/main/resources/uploadFromMongo.txt").use { println(it.write(toString()))}
-//    }
 }

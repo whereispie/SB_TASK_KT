@@ -1,10 +1,13 @@
+import com.google.gson.GsonBuilder
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCollection
 import org.bson.Document
 import tools.BasicOperationSystemTools
 import tools.MongoConnect
+import java.io.File
 import java.io.FileInputStream
+import java.io.FileWriter
 
 
 /**
@@ -12,33 +15,52 @@ import java.io.FileInputStream
  */
 class LibraryCourier : MongoConnect, BasicOperationSystemTools {
 
-    override fun dataBaseConnect(dataBaseName: String, collectionName: String) {
+    override fun wordOperation(dataBaseName: String, collectionName: String) {
 
-        /** prepare data from configuration file to connect */
+        /**
+         * prepare data from configuration file to connect
+         **/
         val path = Thread.currentThread().contextClassLoader.getResource("")?.path
         val propertyFilePath = path + configurationFile
         config.load(FileInputStream(propertyFilePath))
         val clusterAddress = config.getProperty("URL_PARAM")
-        /** connect to MongoDB and get instance to work with */
+
+        /**
+         * connect to MongoDB and get instance to work with
+         * */
         val uri = MongoClientURI(clusterAddress)
         val mongoSession = MongoClient(uri)
         val database = mongoSession.getDatabase(dataBaseName)
         val collection: MongoCollection<Document> = database.getCollection(collectionName)
-        /** 1) parse inputFile into ArrayList<String> */
-//        val filePath = tools.chooseTextFile()
-//        val inputFile = curator.inputFileFilter(filePath) // toArrayList OK
-//        inputFile.forEach { println(it) }
-        /** 2) GET ALL Mongo data from Cloud */
-//        val mongoFilter = operationSystemTools.saveFromMongo(collection)
-        
-        /** 2.1.2) parse Mongo library into List */
-        val parseMongo = curator.mongoFilter("src/main/resources/uploadFromMongo.txt")
-        parseMongo.forEach { println(it) }
-        //todo parse JSON
-        /** 2.1.2) parse Mongo library into HashMap<word:String,count:Int> */
-        //todo put into HashMap
-        /** 3. compare inputFile_ArrayList & saveFromMongo.HashMap */
-        //todo
+
+        /**
+         * 1) parse inputFile into ArrayList<String>
+         **/
+        val filePath = tools.chooseTextFile()
+        val rawText = curator.rawFilter(filePath) // ArrayList
+        rawText.forEach { println(it) }
+
+        /**
+         * 2.1) Create projection that excludes the _id field.
+         **/
+
+        val mongoFilter = curator.saveFromMongo(collection) // ArrayList
+
+        /**
+         * 2.2) Save to JSON and get WORD + COUNT
+         **/
+        val gson = GsonBuilder().setPrettyPrinting().create();
+        FileWriter(File("src/main/resources/pretty.json")).use { writer -> gson.toJson(mongoFilter, writer) }
+        /**
+         * 2.3) parse Mongo library into HashMap<word:String,count:Int>
+         **/
+        val hashMap = curator.jsonParser("WORD", "WORD_COUNT")
+
+        /**
+         * 3. compare inputFile_ArrayList & saveFromMongo.HashMap
+         **/
+
+
         /** 4. Update OR Insert into final HashMap */
         //todo
         /** 5. updateMany database in a LOOP into Mongo */

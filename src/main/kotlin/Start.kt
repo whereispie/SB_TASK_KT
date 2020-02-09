@@ -1,13 +1,10 @@
 import tools.BasicOperationSystemTools
 import java.util.*
 
-val init = LibraryCourier()
-val tools = SystemTools()
-val curator = LibraryCurator()
-val operationSystemTools = SystemTools()
 val config = Properties()
-
-
+val init = LibraryCourier()
+val curator = LibraryCurator()
+val tools = SystemTools()
 const val configurationFile = "config.properties"
 
 open class Start : BasicOperationSystemTools {
@@ -15,7 +12,7 @@ open class Start : BasicOperationSystemTools {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            init.dataBaseConnect("library", "words") // TODO can i change on props ?
+            init.wordOperation("library", "words")
         }
     }
 }

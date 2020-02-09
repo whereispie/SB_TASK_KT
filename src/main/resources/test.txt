@@ -1,11 +1,3 @@
-Pop,hey:lala!hey.
-
-Поп,хэй:лала!лэй.
-
-gf@ffdd#fdsg$gdfgd%gdfg^GFDFG&GFDGDF*KGFDGDF(GFDG)GFG-
-
-124.00
-551
-1
-0
-0.000/
+MOON
+SATURN
+JUPITER

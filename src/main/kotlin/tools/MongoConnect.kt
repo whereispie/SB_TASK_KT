@@ -16,6 +16,6 @@ interface MongoConnect {
     /**
      * Connect to MongoDB cluster using URI
      */
-    fun dataBaseConnect(dataBaseName: String, collectionName: String) {
+    fun wordOperation(dataBaseName: String, collectionName: String) {
     }
 }
