@@ -27,4 +27,10 @@ interface LibraryFilter {
      * Parse data from JSON format from Mongo to String then HashMap
      */
     fun jsonParser(word: String, count: String): HashMap<String, Int>
+
+    /**
+     * Compare userBook and mongoBook
+     */
+    fun bookEqualize(userData: List<String>, mongoData: HashMap<String, Int>) {
+    }
 }

@@ -18,7 +18,7 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
     override fun wordOperation(dataBaseName: String, collectionName: String) {
 
         /**
-         * prepare data from configuration file to connect
+         * data. prepare data from configuration file to connect
          **/
         val path = Thread.currentThread().contextClassLoader.getResource("")?.path
         val propertyFilePath = path + configurationFile
@@ -26,7 +26,7 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
         val clusterAddress = config.getProperty("URL_PARAM")
 
         /**
-         * connect to MongoDB and get instance to work with
+         * init. connect to MongoDB and get instance to work with
          * */
         val uri = MongoClientURI(clusterAddress)
         val mongoSession = MongoClient(uri)
@@ -34,32 +34,34 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
         val collection: MongoCollection<Document> = database.getCollection(collectionName)
 
         /**
-         * 1) parse inputFile into ArrayList<String>
+         * 1. parse inputFile into ArrayList<String>
          **/
         val filePath = tools.chooseTextFile()
-        val rawText = curator.rawFilter(filePath) // ArrayList
-        rawText.forEach { println(it) }
+        val filteredUserBook = curator.rawFilter(filePath) // ArrayList //rawText.forEach { println(it) }
+        filteredUserBook.forEach { println(it) }
 
         /**
-         * 2.1) Create projection that excludes the _id field.
+         * 2.1 Create projection that excludes the _id field.
          **/
 
-        val mongoFilter = curator.saveFromMongo(collection) // ArrayList
-
+        val rawMongoBook = curator.saveFromMongo(collection) // ArrayList
+        rawMongoBook.forEach { println(it) }
         /**
-         * 2.2) Save to JSON and get WORD + COUNT
+         * 2.2 Save to JSON and get WORD + COUNT
          **/
         val gson = GsonBuilder().setPrettyPrinting().create();
-        FileWriter(File("src/main/resources/pretty.json")).use { writer -> gson.toJson(mongoFilter, writer) }
+        FileWriter(File("src/main/resources/pretty.json")).use { writer -> gson.toJson(rawMongoBook, writer) }
+
         /**
-         * 2.3) parse Mongo library into HashMap<word:String,count:Int>
+         * 2.3 parse Mongo library into HashMap<word:String,count:Int>
          **/
-        val hashMap = curator.jsonParser("WORD", "WORD_COUNT")
+        val filteredMongoBook = curator.jsonParser("WORD", "WORD_COUNT")
+        filteredMongoBook.forEach { println(it) }
 
         /**
          * 3. compare inputFile_ArrayList & saveFromMongo.HashMap
          **/
-
+        curator.bookEqualize(filteredUserBook, filteredMongoBook)
 
         /** 4. Update OR Insert into final HashMap */
         //todo
@@ -71,26 +73,6 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
 //                Updates.set("WORD_COUNT", 0)
 //            )
 //        );
-        //todo
-        /** Map example */
-//                Map<String, Object> documentMap = new HashMap<String, Object>();
-//        documentMap.put("database", "mkyongDB");
-//        documentMap.put("table", "hosting");
-//
-//        Map<String, Object> documentMapDetail = new HashMap<String, Object>();
-//        documentMapDetail.put("records", 99);
-//        documentMapDetail.put("index", "vps_index1");
-//        documentMapDetail.put("active", "true");
-//
-//        documentMap.put("detail", documentMapDetail);
-//
-//        collection.insert(new BasicDBObject(documentMap));
-
-//        var map: MutableMap<Any?, Any?>? = HashMap<Any, Any>()
-//        map!!["1"] = "Department A"
-//        map["2"] = "Department B"
-//        collection.insert(BasicDBObject(map))
-
 
         /** close connection to DB */
         mongoSession.close()

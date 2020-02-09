@@ -12,6 +12,7 @@ import java.nio.file.Paths
 import java.util.*
 import java.util.function.Consumer
 import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 
 class LibraryCurator : LibraryFilter {
@@ -44,17 +45,32 @@ class LibraryCurator : LibraryFilter {
         val parser = JsonParser()
         val obj = parser.parse(FileReader(File("src/main/resources/pretty.json")))
         val jsonObjects: JsonArray = obj as JsonArray
-        val documentMap = HashMap<String, Int>()
+        var documentMap = HashMap<String, Int>()
         for (o in jsonObjects) {
             val jsonObject: JsonObject = o as JsonObject
             val word = jsonObject.get(word).toString().substringAfter("\"").substringBefore("\"")
-            print("$word=")
+//            print("$word=")
             val wordCount = jsonObject.get(count).toString()
-            println(wordCount)
+//            println(wordCount)
             val wordCountToInt = wordCount.toInt()
             documentMap[word] = wordCountToInt
         }
-        println(documentMap)
         return documentMap
+    }
+
+    override fun bookEqualize(userData: List<String>, mongoData: HashMap<String, Int>) {
+        val shallowCopy: HashMap<String, Int> = mongoData.clone() as HashMap<String, Int>
+        for ((key, value) in shallowCopy) {
+            for (word in userData) {
+                if (mongoData.containsKey(word)) {
+                    val countPlus = value + 1
+                    mongoData.replace(key, countPlus)
+                } else {
+                    val newWordCount = 1
+                    mongoData[word] = newWordCount
+                }
+            }
+        }
+        println(mongoData)
     }
 }
