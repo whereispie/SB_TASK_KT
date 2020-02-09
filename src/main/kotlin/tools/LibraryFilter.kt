@@ -1,7 +1,5 @@
 package tools
 
-import java.io.File
-
 /**
  * Interface for:
  * 1. Filter file for Latin,Cyrillic,digits else -> splitter
@@ -9,13 +7,11 @@ import java.io.File
  */
 
 interface LibraryFilter {
-    fun fileFilter(originalText: String): List<String> {
+    fun inputFileFilter(originalText: String): List<String> {
         return emptyList()
     }
 
-    fun wordTableCheck(filteredFile: File) {}
-    // new_word not in WORDS
-    // then WORD = new_word, WORD_COUNT = 1
-    // new_word in OLD_WORDS
-    // then WORD_COUNT = 1
+    fun mongoFilter(originalText: String): List<String> {
+        return emptyList()
+    }
 }

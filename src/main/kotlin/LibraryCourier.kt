@@ -1,13 +1,10 @@
-import com.mongodb.BasicDBObject
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCollection
-import com.mongodb.client.model.Projections
 import org.bson.Document
 import tools.BasicOperationSystemTools
 import tools.MongoConnect
 import java.io.FileInputStream
-import java.util.*
 
 
 /**
@@ -27,20 +24,23 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
         val mongoSession = MongoClient(uri)
         val database = mongoSession.getDatabase(dataBaseName)
         val collection: MongoCollection<Document> = database.getCollection(collectionName)
-
         /** 1) parse inputFile into ArrayList<String> */
 //        val filePath = tools.chooseTextFile()
-//        val inputFile = curator.fileFilter(filePath) // toArrayList
+//        val inputFile = curator.inputFileFilter(filePath) // toArrayList OK
 //        inputFile.forEach { println(it) }
-
-        /** 2) get Mongo library from Cloud */
-//        operationSystemTools.saveFromMongo(collection)
-        /** 2.1) parse Mongo library into HashMap<word:String,count:Int> */
-
+        /** 2) GET ALL Mongo data from Cloud */
+//        val mongoFilter = operationSystemTools.saveFromMongo(collection)
+        
+        /** 2.1.2) parse Mongo library into List */
+        val parseMongo = curator.mongoFilter("src/main/resources/uploadFromMongo.txt")
+        parseMongo.forEach { println(it) }
+        //todo parse JSON
+        /** 2.1.2) parse Mongo library into HashMap<word:String,count:Int> */
+        //todo put into HashMap
         /** 3. compare inputFile_ArrayList & saveFromMongo.HashMap */
-
+        //todo
         /** 4. Update OR Insert into final HashMap */
-
+        //todo
         /** 5. updateMany database in a LOOP into Mongo */
 //        collection.updateMany(
 //            Filters.eq("WORD", "EARTH-13"),
@@ -49,12 +49,7 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
 //                Updates.set("WORD_COUNT", 0)
 //            )
 //        );
-
-        /** Creates a projection that excludes the _id field. */
-        val hello = collection.find().projection(Projections.excludeId()) //
-        hello.forEach { println(it.toJson()) }
-
-
+        //todo
         /** Map example */
 //                Map<String, Object> documentMap = new HashMap<String, Object>();
 //        documentMap.put("database", "mkyongDB");

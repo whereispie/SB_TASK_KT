@@ -10,7 +10,7 @@ import org.bson.Document
 interface BasicOperationSystemTools {
 
     /**
-     * Choose file with text source using JChooser
+     * Choose file with text source using console input
      */
 
     fun chooseTextFile(): String {
