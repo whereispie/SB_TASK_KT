@@ -13,6 +13,7 @@ import java.util.*
 import java.util.function.Consumer
 import java.util.stream.Collectors
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class LibraryCurator : LibraryFilter {
@@ -58,7 +59,11 @@ class LibraryCurator : LibraryFilter {
         return documentMap
     }
 
-    override fun bookEqualize(userData: List<String>, mongoData: HashMap<String, Int>) {
+    override fun bookEqualize(
+        userData: List<String>,
+        mongoData: HashMap<String, Int>,
+        toUpdateMongoBook: HashMap<String, Int>
+    ) {
         val shallowCopy: HashMap<String, Int> = mongoData.clone() as HashMap<String, Int>
         for ((key, value) in shallowCopy) {
             for (word in userData) {
@@ -67,10 +72,9 @@ class LibraryCurator : LibraryFilter {
                     mongoData.replace(key, countPlus)
                 } else {
                     val newWordCount = 1
-                    mongoData[word] = newWordCount
+                    toUpdateMongoBook[word] = newWordCount
                 }
             }
         }
-        println(mongoData)
     }
 }

@@ -12,7 +12,8 @@ open class Start : BasicOperationSystemTools {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            init.wordOperation("library", "words")
+            val filePath = tools.chooseTextFile()
+            init.wordOperation(filePath)
         }
     }
 }

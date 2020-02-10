@@ -1,8 +1,10 @@
 package tools
 
 import com.mongodb.client.MongoCollection
+import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Updates
 import org.bson.Document
-import java.util.HashMap
+import kotlin.collections.HashMap
 
 /**
  * Interface for:
@@ -31,6 +33,26 @@ interface LibraryFilter {
     /**
      * Compare userBook and mongoBook
      */
-    fun bookEqualize(userData: List<String>, mongoData: HashMap<String, Int>) {
+    fun bookEqualize(
+        userData: List<String>,
+        mongoData: HashMap<String, Int>,
+        toUpdateMongoBook: HashMap<String, Int>
+    ) {
+    }
+
+
+    /**
+     * updateMany database in a LOOP into Mongo //todo make JSON [] update
+     */
+    fun updateWords(oldCollection: MongoCollection<Document>, newCollection: HashMap<String, Int>) {
+        for ((key, value) in newCollection) {
+            oldCollection.updateMany(
+                Filters.eq("WORD", key),
+                Updates.combine(
+                    Updates.set("WORD", key),
+                    Updates.set("WORD_COUNT", value)
+                )
+            )
+        }
     }
 }

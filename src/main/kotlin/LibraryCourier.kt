@@ -2,6 +2,8 @@ import com.google.gson.GsonBuilder
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCollection
+import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Updates
 import org.bson.Document
 import tools.BasicOperationSystemTools
 import tools.MongoConnect
@@ -15,7 +17,7 @@ import java.io.FileWriter
  */
 class LibraryCourier : MongoConnect, BasicOperationSystemTools {
 
-    override fun wordOperation(dataBaseName: String, collectionName: String) {
+    override fun wordOperation(filePath: String) {
 
         /**
          * data. prepare data from configuration file to connect
@@ -24,6 +26,8 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
         val propertyFilePath = path + configurationFile
         config.load(FileInputStream(propertyFilePath))
         val clusterAddress = config.getProperty("URL_PARAM")
+        val dataBaseName = config.getProperty("DB_NAME")
+        val collectionName = config.getProperty("COLLECTION")
 
         /**
          * init. connect to MongoDB and get instance to work with
@@ -36,16 +40,15 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
         /**
          * 1. parse inputFile into ArrayList<String>
          **/
-        val filePath = tools.chooseTextFile()
         val filteredUserBook = curator.rawFilter(filePath) // ArrayList //rawText.forEach { println(it) }
-        filteredUserBook.forEach { println(it) }
+//        filteredUserBook.forEach { println(it) }
 
         /**
          * 2.1 Create projection that excludes the _id field.
          **/
 
         val rawMongoBook = curator.saveFromMongo(collection) // ArrayList
-        rawMongoBook.forEach { println(it) }
+//        rawMongoBook.forEach { println(it) }
         /**
          * 2.2 Save to JSON and get WORD + COUNT
          **/
@@ -56,23 +59,24 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
          * 2.3 parse Mongo library into HashMap<word:String,count:Int>
          **/
         val filteredMongoBook = curator.jsonParser("WORD", "WORD_COUNT")
-        filteredMongoBook.forEach { println(it) }
+//        filteredMongoBook.forEach { println(it) }
 
         /**
          * 3. compare inputFile_ArrayList & saveFromMongo.HashMap
          **/
-        curator.bookEqualize(filteredUserBook, filteredMongoBook)
+        val toUpdateMongoBook = HashMap<String, Int>()
+        curator.bookEqualize(filteredUserBook, filteredMongoBook, toUpdateMongoBook)
+        println("[UserBook]")
+        filteredUserBook.forEach { println(it) }
+        println("***")
+        println("[MongoBook]")
+        filteredMongoBook.forEach { println(it) }
+        println("***")
+        println("[toUpdateMongoBook]")
+        toUpdateMongoBook.forEach { println(it) }
 
-        /** 4. Update OR Insert into final HashMap */
-        //todo
-        /** 5. updateMany database in a LOOP into Mongo */
-//        collection.updateMany(
-//            Filters.eq("WORD", "EARTH-13"),
-//            Updates.combine(
-//                Updates.set("WORD", "EARTH-130"),
-//                Updates.set("WORD_COUNT", 0)
-//            )
-//        );
+        /** 4. updateMany database in a LOOP into Mongo */
+        curator.updateWords(collection, filteredMongoBook)
 
         /** close connection to DB */
         mongoSession.close()
