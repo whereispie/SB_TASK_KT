@@ -2,8 +2,6 @@ import com.google.gson.GsonBuilder
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCollection
-import com.mongodb.client.model.Filters
-import com.mongodb.client.model.Updates
 import org.bson.Document
 import tools.BasicOperationSystemTools
 import tools.MongoConnect
@@ -40,15 +38,13 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
         /**
          * 1. parse inputFile into ArrayList<String>
          **/
-        val filteredUserBook = curator.rawFilter(filePath) // ArrayList //rawText.forEach { println(it) }
-//        filteredUserBook.forEach { println(it) }
+        val filteredUserBook = curator.rawFilter(filePath)
 
         /**
          * 2.1 Create projection that excludes the _id field.
          **/
 
-        val rawMongoBook = curator.saveFromMongo(collection) // ArrayList
-//        rawMongoBook.forEach { println(it) }
+        val rawMongoBook = curator.saveFromMongo(collection)
         /**
          * 2.2 Save to JSON and get WORD + COUNT
          **/
@@ -59,29 +55,26 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
          * 2.3 parse Mongo library into HashMap<word:String,count:Int>
          **/
         val filteredMongoBook = curator.jsonParser("WORD", "WORD_COUNT")
-//        filteredMongoBook.forEach { println(it) }
 
         /**
          * 3. compare inputFile_ArrayList & saveFromMongo.HashMap
          **/
         val toUpdateMongoBook = HashMap<String, Int>()
         curator.bookEqualize(filteredUserBook, filteredMongoBook, toUpdateMongoBook)
-        println("[UserBook]")
-        filteredUserBook.forEach { println(it) }
-        println("***")
-        println("[MongoBook]")
-        filteredMongoBook.forEach { println(it) }
-        println("***")
-        println("[toUpdateMongoBook]")
-        toUpdateMongoBook.forEach { println(it) }
 
-        /** 4. updateMany into Mongo */
+        /**
+         * 4. updateMany into Mongo
+         **/
         curator.updateWords(collection, filteredMongoBook)
 
-        /** 5. insertMany into Mongo */
+        /**
+         * 5. insertMany into Mongo
+         **/
         curator.insertWords(collection, toUpdateMongoBook)
 
-        /** close connection to DB */
+        /**
+         * close connection to DB
+         **/
         mongoSession.close()
     }
 }

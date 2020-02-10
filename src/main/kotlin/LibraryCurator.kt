@@ -52,9 +52,7 @@ class LibraryCurator : LibraryFilter {
         for (o in jsonObjects) {
             val jsonObject: JsonObject = o as JsonObject
             val word = jsonObject.get(word).toString().substringAfter("\"").substringBefore("\"")
-//            print("$word=")
             val wordCount = jsonObject.get(count).toString()
-//            println(wordCount)
             val wordCountToInt = wordCount.toInt()
             documentMap[word] = wordCountToInt
         }
