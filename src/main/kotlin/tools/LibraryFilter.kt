@@ -45,14 +45,11 @@ interface LibraryFilter {
      * updateMany database in a LOOP into Mongo //todo make JSON [] update
      */
     fun updateWords(oldCollection: MongoCollection<Document>, newCollection: HashMap<String, Int>) {
-        for ((key, value) in newCollection) {
-            oldCollection.updateMany(
-                Filters.eq("WORD", key),
-                Updates.combine(
-                    Updates.set("WORD", key),
-                    Updates.set("WORD_COUNT", value)
-                )
-            )
-        }
+    }
+
+    /**
+     * insertOne database in a LOOP into Mongo //todo make JSON [] insert
+     */
+    fun insertWords(oldCollection: MongoCollection<Document>, newCollection: HashMap<String, Int>) {
     }
 }

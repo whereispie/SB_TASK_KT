@@ -2,7 +2,9 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.mongodb.client.MongoCollection
+import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Projections
+import com.mongodb.client.model.Updates
 import org.bson.Document
 import tools.LibraryFilter
 import java.io.File
@@ -75,6 +77,26 @@ class LibraryCurator : LibraryFilter {
                     toUpdateMongoBook[word] = newWordCount
                 }
             }
+        }
+    }
+
+    override fun insertWords(originalCollection: MongoCollection<Document>, newCollection: HashMap<String, Int>) {
+        for ((key, value) in newCollection) {
+            val doc = Document("WORD", key)
+                .append("WORD_COUNT", value)
+            originalCollection.insertOne(doc);
+        }
+    }
+
+    override fun updateWords(originalCollection: MongoCollection<Document>, newCollection: HashMap<String, Int>) {
+        for ((key, value) in newCollection) {
+            originalCollection.updateMany(
+                Filters.eq("WORD", key),
+                Updates.combine(
+                    Updates.set("WORD", key),
+                    Updates.set("WORD_COUNT", value)
+                )
+            )
         }
     }
 }

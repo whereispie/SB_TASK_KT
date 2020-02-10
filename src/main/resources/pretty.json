@@ -1,10 +1,18 @@
 [
   {
-    "WORD": "MOON",
+    "WORD": "БЕЛКА",
     "WORD_COUNT": 2
   },
   {
-    "WORD": "EARTH",
+    "WORD": "СТРЕЛКА",
     "WORD_COUNT": 2
+  },
+  {
+    "WORD": "СПУТНИК",
+    "WORD_COUNT": 2
+  },
+  {
+    "WORD": "MOON",
+    "WORD_COUNT": 1
   }
 ]

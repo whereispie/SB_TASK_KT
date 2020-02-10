@@ -79,7 +79,7 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
         curator.updateWords(collection, filteredMongoBook)
 
         /** 5. insertMany into Mongo */
-        //todo add new words
+        curator.insertWords(collection, toUpdateMongoBook)
 
         /** close connection to DB */
         mongoSession.close()
