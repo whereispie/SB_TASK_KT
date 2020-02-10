@@ -75,8 +75,11 @@ class LibraryCourier : MongoConnect, BasicOperationSystemTools {
         println("[toUpdateMongoBook]")
         toUpdateMongoBook.forEach { println(it) }
 
-        /** 4. updateMany database in a LOOP into Mongo */
+        /** 4. updateMany into Mongo */
         curator.updateWords(collection, filteredMongoBook)
+
+        /** 5. insertMany into Mongo */
+        //todo add new words
 
         /** close connection to DB */
         mongoSession.close()
