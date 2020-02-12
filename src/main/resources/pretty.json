@@ -1,14 +1,26 @@
 [
   {
     "WORD": "БЕЛКА",
-    "WORD_COUNT": 2
+    "WORD_COUNT": 4
   },
   {
-    "WORD": "СТРЕЛКА",
-    "WORD_COUNT": 2
+    "WORD": "ЛУНА",
+    "WORD_COUNT": 4
   },
   {
-    "WORD": "СПУТНИК",
-    "WORD_COUNT": 2
+    "WORD": "EARTH",
+    "WORD_COUNT": 3
+  },
+  {
+    "WORD": "ARROW",
+    "WORD_COUNT": 3
+  },
+  {
+    "WORD": "SPRING",
+    "WORD_COUNT": 3
+  },
+  {
+    "WORD": "HELLO",
+    "WORD_COUNT": 3
   }
 ]

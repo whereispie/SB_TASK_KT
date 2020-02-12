@@ -1,20 +1,18 @@
+package tools
+
 import com.google.gson.GsonBuilder
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCollection
+import config
+import configurationFile
+import curator
 import org.bson.Document
-import tools.BasicOperationSystemTools
-import tools.MongoConnect
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileWriter
 
-
-/**
- * Class for: connect -> filter input file -> get vocabulary from Mongo -> compare words -> update/add new
- */
-class LibraryCourier : MongoConnect, BasicOperationSystemTools {
-
+class MongoConnectImp : MongoConnect{
     override fun wordOperation(filePath: String) {
 
         /**
